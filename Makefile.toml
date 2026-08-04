@@ -552,12 +552,17 @@ run_task = "patch"
 
 [tasks.mm-supervisor]
 description = """Builds the DEBUG Q35 MM Supervisor firmware."""
-env = { CARGO_BIN_NAME = "q35_mm_supervisor", "RUSTC_PROFILE" = "dev", CARGO_BIN_TARGET = "x86_64-unknown-uefi", CARGO_BIN_FEATURES = "x64,supv,save_state_amd", CARGO_TARGET_X86_64_UNKNOWN_UEFI_RUSTFLAGS = "-C link-arg=/PDBALTPATH:q35_mm_supervisor.pdb" }
+# /MAP emits a linker map next to the binary. The optimizer drops the debug info for some statics,
+# notably `&dyn Trait` statics that it splits into one global per pointer, and the map is the only
+# place those names survive. SEA aux generation reads it to tell such a static apart from padding.
+# A map is an additional linker output and does not change the image.
+env = { CARGO_BIN_NAME = "q35_mm_supervisor", "RUSTC_PROFILE" = "dev", CARGO_BIN_TARGET = "x86_64-unknown-uefi", CARGO_BIN_FEATURES = "x64,supv,save_state_amd", CARGO_TARGET_X86_64_UNKNOWN_UEFI_RUSTFLAGS = "-C link-arg=/PDBALTPATH:q35_mm_supervisor.pdb -C link-arg=/MAP:${CARGO_MAKE_WORKING_DIRECTORY}/target/x86_64-unknown-uefi/debug/q35_mm_supervisor.map" }
 run_task = "patch"
 
 [tasks.mm-supervisor-release]
 description = """Builds the RELEASE Q35 MM Supervisor firmware."""
-env = { CARGO_BIN_NAME = "q35_mm_supervisor", "RUSTC_PROFILE" = "release", CARGO_BIN_TARGET = "x86_64-unknown-uefi", CARGO_BIN_FEATURES = "x64,supv,save_state_amd", CARGO_TARGET_X86_64_UNKNOWN_UEFI_RUSTFLAGS = "-C link-arg=/PDBALTPATH:q35_mm_supervisor.pdb" }
+# See the note on the DEBUG task above.
+env = { CARGO_BIN_NAME = "q35_mm_supervisor", "RUSTC_PROFILE" = "release", CARGO_BIN_TARGET = "x86_64-unknown-uefi", CARGO_BIN_FEATURES = "x64,supv,save_state_amd", CARGO_TARGET_X86_64_UNKNOWN_UEFI_RUSTFLAGS = "-C link-arg=/PDBALTPATH:q35_mm_supervisor.pdb -C link-arg=/MAP:${CARGO_MAKE_WORKING_DIRECTORY}/target/x86_64-unknown-uefi/release/q35_mm_supervisor.map" }
 run_task = "patch"
 
 [tasks.mm-user-core]
