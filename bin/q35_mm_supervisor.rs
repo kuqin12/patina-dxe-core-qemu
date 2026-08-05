@@ -34,8 +34,8 @@ use core::{ffi::c_void, panic::PanicInfo, sync::atomic::AtomicBool};
 use patina_mm_supervisor::*;
 // use the the uart from patina
 use patina::{
-    log::{Format, SerialLogger},
-    serial::uart::Uart16550,
+    debug::log::{Format, SerialLogger},
+    peripheral::serial::uart::Uart16550,
 };
 use patina_stacktrace::StackTrace;
 use qemu_resources::q35::timer;
@@ -90,6 +90,21 @@ static LOGGER: SerialLogger<Uart16550> = SerialLogger::new(
     // SAFETY: 0x402 is the QEMU Q35 debug serial I/O port, owned exclusively by this binary.
     unsafe { Uart16550::new_io(0x402) },
 );
+
+struct DummyAllocator;
+ 
+unsafe impl core::alloc::GlobalAlloc for DummyAllocator {
+    unsafe fn alloc(&self, _layout: core::alloc::Layout) -> *mut u8 {
+        panic!("heap allocation is not supported in the MM Supervisor");
+    }
+ 
+    unsafe fn dealloc(&self, _ptr: *mut u8, _layout: core::alloc::Layout) {
+        panic!("heap deallocation is not supported in the MM Supervisor");
+    }
+}
+ 
+#[global_allocator]
+static ALLOCATOR: DummyAllocator = DummyAllocator;
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {

@@ -35,21 +35,21 @@ path = "src/lib.rs"
 [dependencies]
 
 # Patina dependencies
-patina = { version = "22", default-features = false }
-patina_acpi = { version = "22", optional = true }
-patina_adv_logger = { version = "22", optional = true }
-patina_debugger = { version = "22", optional = true }
-patina_dxe_core = { version = "22", optional = true }
-patina_ffs_extractors = { version = "22", optional = true }
-patina_mm = { version = "22", optional = true }
-patina_mm_cpu = { version = "22", optional = true }
-patina_mm_supervisor = { version = "22", optional = true }
-patina_mm_user_core = { version = "22", optional = true }
-patina_performance = { version = "22", optional = true }
-patina_samples = { version = "22", optional = true }
-patina_smbios = { version = "22", optional = true }
-patina_stacktrace = { version = "22", optional = true }
-patina_test = { version = "22", features = ["test-runner"], optional = true }
+patina = { version = "^23", default-features = false }
+patina_acpi = { version = "^23", optional = true }
+patina_adv_logger = { version = "^23", optional = true }
+patina_debugger = { version = "^23", optional = true }
+patina_dxe_core = { version = "^23", optional = true }
+patina_ffs_extractors = { version = "^23", optional = true }
+patina_mm = { version = "^23", optional = true }
+patina_mm_cpu = { version = "^23", optional = true }
+patina_mm_supervisor = { version = "^23", optional = true }
+patina_mm_user_core = { version = "^23", optional = true }
+patina_performance = { version = "^23", optional = true }
+patina_samples = { version = "^23", optional = true }
+patina_smbios = { version = "^23", optional = true }
+patina_stacktrace = { version = "^23", optional = true }
+patina_test = { version = "^23", features = ["test-runner"], optional = true }
 
 # Other dependencies
 log = { version = "^0.4", default-features = false, features = [

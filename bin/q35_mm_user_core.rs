@@ -30,7 +30,7 @@
 #![no_main]
 
 use core::{ffi::c_void, panic::PanicInfo, sync::atomic::AtomicBool};
-use patina::{log::Format, management_mode::supervisor::UserCommandType, serial::uart::Uart16550};
+use patina::{debug::log::Format, management_mode::supervisor::UserCommandType, peripheral::serial::uart::Uart16550};
 use patina_adv_logger::logger::{AdvancedLogger, TargetFilter};
 use patina_mm_user_core::{
     MmUserCore,
